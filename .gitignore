@@ -1,0 +1,5 @@
+*.csv
+*.xlsx
+credentials.json
+UserData
+cookies.txt

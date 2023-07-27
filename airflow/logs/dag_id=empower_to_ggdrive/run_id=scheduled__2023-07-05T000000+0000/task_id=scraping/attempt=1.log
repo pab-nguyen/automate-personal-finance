@@ -1,0 +1,27 @@
+[2023-07-26T21:23:40.269+0000] {taskinstance.py:1103} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: empower_to_ggdrive.scraping scheduled__2023-07-05T00:00:00+00:00 [queued]>
+[2023-07-26T21:23:40.304+0000] {taskinstance.py:1103} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: empower_to_ggdrive.scraping scheduled__2023-07-05T00:00:00+00:00 [queued]>
+[2023-07-26T21:23:40.305+0000] {taskinstance.py:1308} INFO - Starting attempt 1 of 2
+[2023-07-26T21:23:40.401+0000] {taskinstance.py:1327} INFO - Executing <Task(PythonOperator): scraping> on 2023-07-05 00:00:00+00:00
+[2023-07-26T21:23:40.408+0000] {standard_task_runner.py:57} INFO - Started process 89 to run task
+[2023-07-26T21:23:40.415+0000] {standard_task_runner.py:84} INFO - Running: ['***', 'tasks', 'run', 'empower_to_ggdrive', 'scraping', 'scheduled__2023-07-05T00:00:00+00:00', '--job-id', '69', '--raw', '--subdir', 'DAGS_FOLDER/empower_to_ggdrive.py', '--cfg-path', '/tmp/tmp1ut_450p']
+[2023-07-26T21:23:40.422+0000] {standard_task_runner.py:85} INFO - Job 69: Subtask scraping
+[2023-07-26T21:23:40.617+0000] {task_command.py:410} INFO - Running <TaskInstance: empower_to_ggdrive.scraping scheduled__2023-07-05T00:00:00+00:00 [running]> on host 4139e27af0e6
+[2023-07-26T21:23:41.102+0000] {taskinstance.py:1547} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='empower_to_ggdrive' AIRFLOW_CTX_TASK_ID='scraping' AIRFLOW_CTX_EXECUTION_DATE='2023-07-05T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2023-07-05T00:00:00+00:00'
+[2023-07-26T21:23:41.492+0000] {python.py:183} INFO - Done. Returned value was: None
+[2023-07-26T21:23:41.521+0000] {taskinstance.py:1350} INFO - Marking task as SUCCESS. dag_id=empower_to_ggdrive, task_id=scraping, execution_date=20230705T000000, start_date=20230726T212340, end_date=20230726T212341
+[2023-07-26T21:23:41.788+0000] {local_task_job_runner.py:225} INFO - Task exited with return code 0
+[2023-07-26T21:23:41.852+0000] {taskinstance.py:2653} INFO - 1 downstream tasks scheduled from follow-on schedule check
+[2023-07-26T21:58:10.051+0000] {taskinstance.py:1103} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: empower_to_ggdrive.scraping scheduled__2023-07-05T00:00:00+00:00 [queued]>
+[2023-07-26T21:58:10.100+0000] {taskinstance.py:1103} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: empower_to_ggdrive.scraping scheduled__2023-07-05T00:00:00+00:00 [queued]>
+[2023-07-26T21:58:10.102+0000] {taskinstance.py:1308} INFO - Starting attempt 1 of 2
+[2023-07-26T21:58:10.204+0000] {taskinstance.py:1327} INFO - Executing <Task(PythonOperator): scraping> on 2023-07-05 00:00:00+00:00
+[2023-07-26T21:58:10.220+0000] {standard_task_runner.py:57} INFO - Started process 94 to run task
+[2023-07-26T21:58:10.230+0000] {standard_task_runner.py:84} INFO - Running: ['***', 'tasks', 'run', 'empower_to_ggdrive', 'scraping', 'scheduled__2023-07-05T00:00:00+00:00', '--job-id', '149', '--raw', '--subdir', 'DAGS_FOLDER/empower_to_ggdrive.py', '--cfg-path', '/tmp/tmpc5avizo9']
+[2023-07-26T21:58:10.237+0000] {standard_task_runner.py:85} INFO - Job 149: Subtask scraping
+[2023-07-26T21:58:10.490+0000] {task_command.py:410} INFO - Running <TaskInstance: empower_to_ggdrive.scraping scheduled__2023-07-05T00:00:00+00:00 [running]> on host bdafa43ae894
+[2023-07-26T21:58:10.775+0000] {taskinstance.py:1547} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='empower_to_ggdrive' AIRFLOW_CTX_TASK_ID='scraping' AIRFLOW_CTX_EXECUTION_DATE='2023-07-05T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2023-07-05T00:00:00+00:00'
+[2023-07-26T21:58:11.589+0000] {logging_mixin.py:150} INFO - current dir/opt/***
+[2023-07-26T21:58:11.591+0000] {python.py:183} INFO - Done. Returned value was: None
+[2023-07-26T21:58:11.648+0000] {taskinstance.py:1350} INFO - Marking task as SUCCESS. dag_id=empower_to_ggdrive, task_id=scraping, execution_date=20230705T000000, start_date=20230726T215810, end_date=20230726T215811
+[2023-07-26T21:58:11.723+0000] {local_task_job_runner.py:225} INFO - Task exited with return code 0
+[2023-07-26T21:58:11.775+0000] {taskinstance.py:2653} INFO - 1 downstream tasks scheduled from follow-on schedule check
