@@ -6,14 +6,17 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import *
 from pyspark.sql.types import StringType,BooleanType,DateType,IntegerType,DoubleType
 from pyspark.sql.window import Window
-
+import pyspark.pandas as ps
 #create spark Session
 spark = SparkSession.builder.appName("PF").config("spark.sql.caseSensitive", "True").getOrCreate()
-print(__file__)
 # %%
 #read master ledger file, this file will also be the output of this notebook
 #read using pandas then convert to spark dataframe
-df_out = spark.createDataFrame(pd.read_excel('../data/other_input/Master Ledger.xlsx',sheet_name="Master Ledger"))
+print('Hello')
+df_out = spark.createDataFrame(pd.read_excel('./data/other_input/Master Ledger.xlsx',sheet_name="Master Ledger"))
+print(type(df_out))
+print('Hello1')
+
 #change column type to the appropriate type
 df_out = df_out.withColumn("ID",col("ID").cast(IntegerType()))\
         .withColumn("Amount",col("Amount").cast(DoubleType()))\
@@ -34,8 +37,8 @@ df_out.orderBy("ID", ascending=False)
 
 # %%
 #read all supplementary inputs
-acc_meta = spark.read.options(inferSchema='True',header='True').csv('../data/other_input/account_metadata.csv')
-inv_bal = spark.read.options(inferSchema='True',header='True').csv('../data/other_input/investment_balance.csv')
+acc_meta = spark.read.options(inferSchema='True',header='True').csv('./data/other_input/account_metadata.csv')
+inv_bal = spark.read.options(inferSchema='True',header='True').csv('./data/other_input/investment_balance.csv')
 
 #create a category mapping based on past data to auto-assign category
 category_map = df_out.groupby(['Account','Item','Categories','Categories 2','Transaction Type']).count().orderBy('count',ascending=False)
@@ -43,7 +46,7 @@ category_map = df_out.groupby(['Account','Item','Categories','Categories 2','Tra
 
 # %%
 #read all csv files exported from Empower, merge into one spark dataframe
-path = glob.glob('../data/empower_input/*.csv')
+path = glob.glob('./data/empower_input/*.csv')
 emp_data = spark.read.options(inferSchema='True',header='True').csv(path)
 
 
@@ -111,6 +114,6 @@ df_out = df_out.unionByName(df_inv_sum).orderBy("Date")
 
 # %%
 #export to csv and add column ID
-df_out.toPandas().to_csv("../data/output/out.csv", index_label="ID")
+df_out.toPandas().to_csv("./data/output/out.csv", index_label="ID")
 
 

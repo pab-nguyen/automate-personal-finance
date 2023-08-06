@@ -3,3 +3,5 @@
 credentials.json
 UserData
 cookies.txt
+*.log
+airflow/logs/scheduler/latest

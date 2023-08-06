@@ -1,17 +1,16 @@
 import subprocess
 import os
+
+
 def scraping():
-    try:
-     # Execute the external Python script using subprocess
-        exec("/scraping/scraping.py")
-        print("current dir"+os.getcwd())
-    except Exception as e:
-        print("An error occurred during script execution:", str(e))
+    exec(open("./scraping/scraping.py").read())
 
 def cleaning():
-    try:
-        # Execute the external Python script using subprocess
-        subprocess.run(['python', "./cleaning/cleaning.py"])
+    exec(open("./cleaning/cleaning.py").read())
 
-    except Exception as e:
-        print("An error occurred during script execution:", str(e))
+def upload_to_ggdrive():
+    exec(open("./upload_gg_drive/upload_to_ggdrive.py").read())
+
+def download_from_ggdrive():
+    exec(open("./upload_gg_drive/download_from_ggdrive.py").read())
+
