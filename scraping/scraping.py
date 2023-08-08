@@ -13,11 +13,8 @@ import pandas as pd
 from datetime import date as dt
 
 # %%
+# specify download folder
 download =  os.getcwd() + "/data/empower_input"
-print(download)
-print("Hello")
-print(os.getcwd())
-print(os.listdir())
 # %%
 # add options
 chrome_options = webdriver.ChromeOptions()
@@ -34,6 +31,7 @@ chrome_options.add_argument('--remote-debugging-port=9222')
 
 # open driver
 driver = webdriver.Chrome(service=Service(),options=chrome_options)
+print("Openeing webdriver")
 
 driver.get("https://home.personalcapital.com/page/login/goHome")
 with open("./scraping/cookies.txt", "r") as f:
@@ -70,7 +68,7 @@ try:
     input.send_keys(Keys.RETURN)
 except:
     pass
-    
+print("Logged in")
 time.sleep(30)
 
 # %%
@@ -90,6 +88,7 @@ for i in driver.find_element(By.ID,"allTable_wrapper").find_elements(By.XPATH,"/
 df = pd.DataFrame(data, columns = ['Account', 'Balance', 'Last Updated'])
 df["Balance"] = pd.to_numeric(df["Balance"])
 df.to_csv('./data/other_input/investment_balance.csv',encoding='utf-8', index=False)
+print("Finished grabbing investment info")
 
 # %%
 driver.get("https://home.personalcapital.com/page/login/app#/all-transactions")

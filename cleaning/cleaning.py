@@ -103,7 +103,7 @@ df_inv_sum = df_out.filter(col('Account Type') == 'Investment')\
     .withColumn('Date', col('Last Updated'))\
     .withColumn('Categories', lit('Transactional'))\
     .withColumn('Categories 2', lit('Transactional'))\
-    .withColumn('Transaction Type', when(col('Real Amount')>0,lit('Income 2')).otherwise(lit('Expense 2')))\
+    .withColumn('Transaction Type', when(col('Real Amount')>0,lit('Income2')).otherwise(lit('Expense2')))\
     .withColumn('Note', lit(None))\
     .withColumn('Subscriptions', lit(False))\
     .withColumn('Return', lit(False))\
