@@ -24,24 +24,26 @@ chrome_options.add_argument("--user-data-dir=/opt/airflow/scraping/UserData")
 chrome_options.add_argument("--headless=chrome")
 chrome_options.add_argument('--disable-gpu')
 chrome_options.add_argument('--no-sandbox')
-# chrome_options.add_argument('window-size=1920x1080')
+chrome_options.add_argument('window-size=1920x1080')
 chrome_options.add_argument('--disable-dev-shm-usage')   
 chrome_options.add_argument('--remote-debugging-port=9222')
 
 
 # open driver
 driver = webdriver.Chrome(service=Service(),options=chrome_options)
-print("Openeing webdriver")
-
+print("Opening webdriver")
 driver.get("https://home.personalcapital.com/page/login/goHome")
+
+#load cookies
 with open("./scraping/cookies.txt", "r") as f:
     cookies = eval(f.read())
+    print("cookies loaded")
 
 for cookie in cookies:
     driver.add_cookie(cookie)
 driver.implicitly_wait(20)
 
-
+#set download path
 params = {'cmd': 'Page.setDownloadBehavior', 'params': {'behavior': 'allow', 'downloadPath': download}}
 driver.command_executor._commands["send_command"] = ("POST", '/session/$sessionId/chromium/send_command')
 driver.execute("send_command", params)
@@ -55,13 +57,13 @@ data = json.load(f)
 username = data['username']
 password = data['password']
 
+#input username and password
 try:  
     input = driver.find_element(By.NAME,"username")
     input.send_keys(username)
     input.send_keys(Keys.RETURN)
 except:
     pass
-
 try:
     input = driver.find_element(By.NAME,"passwd")
     input.send_keys(password)
@@ -72,18 +74,17 @@ print("Logged in")
 time.sleep(30)
 
 # %%
+# Open Net worth page
 driver.get("https://home.personalcapital.com/page/login/app#/net-worth")
 time.sleep(10)
-
+#take screenshot
 driver.get_screenshot_as_file("./scraping/screenshot.png")
-
 # find investment account and their balance from Net Worth page of Empower
 data = []
 for i in driver.find_element(By.ID,"allTable_wrapper").find_elements(By.XPATH,"//tr[@data-group='-1-investment']"):
     acc = i.find_element(By.CLASS_NAME,"pc-datagrid__row-description").text
     amt = i.find_element(By.CLASS_NAME,"tabular-numbers").text.replace('$',"").replace(',',"")
     data.append([acc,amt,dt.today()])
-
 # add their values to a dataframe for later use
 df = pd.DataFrame(data, columns = ['Account', 'Balance', 'Last Updated'])
 df["Balance"] = pd.to_numeric(df["Balance"])
@@ -91,15 +92,19 @@ df.to_csv('./data/other_input/investment_balance.csv',encoding='utf-8', index=Fa
 print("Finished grabbing investment info")
 
 # %%
+# Open All transactions page
 driver.get("https://home.personalcapital.com/page/login/app#/all-transactions")
 time.sleep(10)
-
+# Download all transactions to csv
 driver.find_element(By.XPATH,"//button[@class='pc-btn pc-btn--tiny qa-export-csv-btn']").click()
 time.sleep(5)
+print("finished downloading transactions")
 
+# save cookies
 cookies = driver.get_cookies()
 with open("./scraping/cookies.txt", "w") as f:
     f.write(str(cookies))
+    print("cookies saved")
 
 # %%
 driver.quit()
