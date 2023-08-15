@@ -4,10 +4,10 @@ import os
 
 scripts_to_run = [
     './scraping/scraping.py',
-    './upload_gg_drive/sync_ggdrive.py',
+    './sync_ggdrive/sync_ggdrive.py',
     "./cleaning/cleaning.py",
     "./cleaning/refresh_excel.py",
-    './upload_gg_drive/sync_ggdrive.py',
+    './sync_ggdrive/sync_ggdrive.py',
     
 ]
 for script in scripts_to_run:
