@@ -14,7 +14,8 @@ from datetime import date as dt
 
 # %%
 # specify download folder
-download =  os.getcwd() + "/data/empower_input"
+download =  os.getcwd() + "\data\empower_input"
+print(download)
 # %%
 # add options
 chrome_options = webdriver.ChromeOptions()
