@@ -8,9 +8,9 @@ import pytz
 # %%
 # authentication
 gauth = GoogleAuth()      
-GoogleAuth.DEFAULT_SETTINGS['client_config_file'] = "./upload_gg_drive/client_secrets.json"
+GoogleAuth.DEFAULT_SETTINGS['client_config_file'] = "./sync_ggdrive/client_secrets.json"
 drive = GoogleDrive(gauth)
-gauth.LoadCredentialsFile("./upload_gg_drive/credentials.json")
+gauth.LoadCredentialsFile("./sync_ggdrive/credentials.json")
 
 # %%
 #get drive files list and local file list

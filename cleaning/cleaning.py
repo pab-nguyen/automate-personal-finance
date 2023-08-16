@@ -74,7 +74,7 @@ max_date = df_out.select(max("Date")).first()[0]
 
 # union master ledger with empower, where the empower dataframe is filtered on max_date - 5. 
 # This is to ensure it captures all transactions, because sometimes the transactions are updated few days after, so 5 days is a good limit. 
-df_out = df_out.unionByName(emp_data.filter(col("Date")> lit(max_date)-10), allowMissingColumns=True)
+df_out = df_out.unionByName(emp_data.filter(col("Date")> lit(max_date)-5), allowMissingColumns=True)
 df_out = df_out.drop("Account Type","Owner","Statement Day").join(acc_meta, on = 'Account').na.fill("")
 
 #auto-assign category using category mapping 

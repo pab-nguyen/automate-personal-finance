@@ -1,5 +1,6 @@
 import win32com.client
 import os
+import time
 # Connect to Excel application
 excel = win32com.client.Dispatch("Excel.Application")
 
@@ -11,8 +12,7 @@ workbook = excel.Workbooks.Open(file_path)
 workbook.RefreshAll()
 excel.CalculateUntilAsyncQueriesDone()
 # Save and close the workbook
-workbook.Save()
-workbook.Close()
+workbook.Close(True)
 
 # Quit Excel application
 excel.Quit()
