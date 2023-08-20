@@ -12,10 +12,8 @@ spark = SparkSession.builder.appName("PF").config("spark.sql.caseSensitive", "Tr
 # %%
 #read master ledger file, this file will also be the output of this notebook
 #read using pandas then convert to spark dataframe
-print('Hello')
 df_out = spark.createDataFrame(pd.read_excel('./data/other_input/Master Ledger.xlsx',sheet_name="Master Ledger"))
 print(type(df_out))
-print('Hello1')
 
 #change column type to the appropriate type
 df_out = df_out.withColumn("ID",col("ID").cast(IntegerType()))\
@@ -78,7 +76,10 @@ df_out = df_out.unionByName(emp_data.filter(col("Date")> lit(max_date)-5), allow
 df_out = df_out.drop("Account Type","Owner","Statement Day").join(acc_meta, on = 'Account').na.fill("")
 
 #auto-assign category using category mapping 
-category_map = df_out.filter(col("Categories") == lit("")).drop('Categories','Categories 2').join(category_map, on=['Account','Item','Transaction Type'], how='left')
+category_map = df_out.filter(col("Categories") == lit("")).drop('Categories','Categories 2')\
+    .join(category_map, on=['Account','Item','Transaction Type'], how='left')\
+    .drop("Subscriptions")\
+    .withColumn('Subscriptions', when(col('Categories 2') == 'Membership',lit(True)).otherwise(lit(False)))
 df_out = df_out.filter(~(col("Categories") == lit(""))).unionByName(category_map, allowMissingColumns=True).drop('count')
 
 #further drop duplicates, in case the Note column are already filled using window partition
