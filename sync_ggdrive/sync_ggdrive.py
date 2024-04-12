@@ -16,7 +16,7 @@ gauth.LoadCredentialsFile("./sync_ggdrive/credentials.json")
 #get drive files list and local file list
 drive_files = drive.ListFile({'q': "'{}' in parents and trashed=false".format('19HgocA5Cb4QWDHXdD5YDqRg7sxjvIdLA')}).GetList()
 local_files = os.listdir('./data/other_input/') 
-
+print(local_files)
 # %%
 # go through each file name in drive
 for file in drive_files:
@@ -40,6 +40,15 @@ for file in drive_files:
         drive_last_modified = local_time.replace(tzinfo=None)
         local_last_modified = datetime.datetime.fromtimestamp(os.path.getmtime(local_file_path))
 
+
+        if drive_file_name == 'Master Ledger.xlsx':
+                # Upload local file to Google Drive
+                drive_file = drive.CreateFile({'id': drive_file_id})
+                drive_file.SetContentFile(local_file_path)
+                drive_file.Upload()
+                print(f"Uploaded {drive_file_name} to Google Drive")
+                continue
+        
         #if local file has newer updated time
         if local_last_modified > drive_last_modified:
                 # Upload local file to Google Drive

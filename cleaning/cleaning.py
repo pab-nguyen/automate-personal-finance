@@ -38,9 +38,15 @@ df_out.orderBy("ID", ascending=False)
 acc_meta = spark.read.options(inferSchema='True',header='True').csv('./data/other_input/account_metadata.csv')
 inv_bal = spark.read.options(inferSchema='True',header='True').csv('./data/other_input/investment_balance.csv')
 
+# %%
 #create a category mapping based on past data to auto-assign category
 category_map = df_out.groupby(['Account','Item','Categories','Categories 2','Transaction Type']).count().orderBy('count',ascending=False)
-
+window = Window.partitionBy(['Account','Item','Transaction Type']).orderBy(col('count').desc())
+category_map = category_map.withColumn("row",row_number().over(window)) \
+    .orderBy(col('count').desc())\
+    .filter(col("row") == 1).drop("row") \
+    .orderBy(col('count').desc())\
+    .filter(~(col('Categories 2') == 'Event'))
 
 # %%
 #read all csv files exported from Empower, merge into one spark dataframe
@@ -73,7 +79,7 @@ max_date = df_out.select(max("Date")).first()[0]
 # union master ledger with empower, where the empower dataframe is filtered on max_date - 5. 
 # This is to ensure it captures all transactions, because sometimes the transactions are updated few days after, so 5 days is a good limit. 
 df_out = df_out.unionByName(emp_data.filter(col("Date")> lit(max_date)-5), allowMissingColumns=True)
-df_out = df_out.drop("Account Type","Owner","Statement Day").join(acc_meta, on = 'Account').na.fill("")
+df_out = df_out.drop("Account Type","Owner","Statement Day","Pay In Full").join(acc_meta, on = 'Account').na.fill("")
 
 #auto-assign category using category mapping 
 category_map = df_out.filter(col("Categories") == lit("")).drop('Categories','Categories 2')\
@@ -93,8 +99,8 @@ df_out = df_out.withColumn("row_number",row_number().over(window))\
     
 
 # check investment accounts balance, insert transactions to change 
-df_inv_sum = df_out.filter(col('Account Type') == 'Investment')\
-    .groupBy('Account')\
+df_inv_sum = df_out.filter((col('Account Type') == 'Investment') | (col('Account Type') == 'Loan') )\
+    .groupBy('Account','Account Type')\
     .agg(sum('Real Amount').alias("Old Balance"))\
     .join(inv_bal, on='Account')\
     .withColumn('Real Amount', col('Balance')- col('Old Balance'))\
@@ -102,12 +108,13 @@ df_inv_sum = df_out.filter(col('Account Type') == 'Investment')\
     .withColumn('Item', lit('Adjustment'))\
     .withColumn('Amount', abs(col('Real Amount')))\
     .withColumn('Date', col('Last Updated'))\
-    .withColumn('Categories', lit('Investment'))\
+    .withColumn('Categories', when(col('Account Type') == 'Investment', lit('Investment')).otherwise(lit('Loan')))\
     .withColumn('Categories 2', lit('Balance Change'))\
     .withColumn('Transaction Type', when(col('Real Amount')>0,lit('Income3')).otherwise(lit('Expense3')))\
     .withColumn('Note', lit(None))\
     .withColumn('Subscriptions', lit(False))\
     .withColumn('Return', lit(False))\
+    .drop('Account Type')\
     .join(acc_meta, on='Account')\
     .drop('Last Updated','Balance', 'Old Balance')
 
