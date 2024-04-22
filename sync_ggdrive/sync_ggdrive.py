@@ -3,7 +3,8 @@ from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 import os
 import datetime
-import pytz
+
+
 
 # %%
 # authentication
@@ -31,11 +32,9 @@ for file in drive_files:
         #get drive modified time, changing timezone
         modified_time = file['modifiedDate']
         utc_time = datetime.datetime.strptime(modified_time, '%Y-%m-%dT%H:%M:%S.%f%z')
-        utc_time = utc_time.replace(tzinfo=pytz.UTC)
 
-        local_timezone = pytz.timezone('America/New_York')  # Replace with your local timezone
-        local_time = utc_time.astimezone(local_timezone)
-
+        time_now = str(datetime.datetime.now())
+        local_time = datetime.datetime.strptime(time_now, '%Y-%m-%d %H:%M:%S.%f')
         #get modified time for both drive and local        
         drive_last_modified = local_time.replace(tzinfo=None)
         local_last_modified = datetime.datetime.fromtimestamp(os.path.getmtime(local_file_path))

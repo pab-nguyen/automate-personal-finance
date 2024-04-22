@@ -13,6 +13,6 @@ scripts_to_run = [
 for script in scripts_to_run:
     try:
         # Run the script using the 'python' interpreter
-        subprocess.run(['python', script], check=True)
+        subprocess.run(['C:/Github Repos/automate-personal-finance/.venv/Scripts/python.exe', script], check=True)
     except subprocess.CalledProcessError as e:
         print(f"Error running '{script}': {e}")

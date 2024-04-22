@@ -6,7 +6,8 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import *
 from pyspark.sql.types import StringType,BooleanType,DateType,IntegerType,DoubleType
 from pyspark.sql.window import Window
-import pyspark.pandas as ps
+
+
 #create spark Session
 spark = SparkSession.builder.appName("PF").config("spark.sql.caseSensitive", "True").getOrCreate()
 # %%

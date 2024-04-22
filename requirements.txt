@@ -2,3 +2,5 @@ pyspark
 selenium
 openpyxl
 pydrive
+pandas
+pywin32
