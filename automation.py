@@ -2,15 +2,23 @@ import subprocess
 import os
 
 
+# scripts_to_run = [
+#     './scraping/scraping.py',
+#     './sync_ggdrive/sync_ggdrive.py',
+#     "./cleaning/cleaning.py",
+#     "./cleaning/refresh_excel.py",
+#     './sync_ggdrive/sync_ggdrive.py',
+    
+# ]
+
 scripts_to_run = [
-    './scraping/scraping.py',
-    './sync_ggdrive/sync_ggdrive.py',
-    "./cleaning/cleaning.py",
-    "./cleaning/refresh_excel.py",
-    './sync_ggdrive/sync_ggdrive.py',
+    'c:/Github Repos/automate-personal-finance/scraping/scraping.py',
+    'c:/Github Repos/automate-personal-finance/sync_ggdrive/sync_ggdrive.py',
+    'c:/Github Repos/automate-personal-finance/cleaning/cleaning.py',
+    'c:/Github Repos/automate-personal-finance/cleaning/refresh_excel.py',
+    'c:/Github Repos/automate-personal-finance/sync_ggdrive/sync_ggdrive.py',
     
 ]
-
 
 for script in scripts_to_run:
     try:
