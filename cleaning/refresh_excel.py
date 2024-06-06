@@ -1,6 +1,11 @@
 import win32com.client
 import os
 import time
+
+f = open("refresh_excel.txt", "a")
+f.write(os.getcwd())
+f.close()
+
 # Connect to Excel application
 excel = win32com.client.Dispatch("Excel.Application")
 
@@ -13,6 +18,7 @@ workbook.RefreshAll()
 # excel.CalculateUntilAsyncQueriesDone()
 print('finished refreshing')
 time.sleep(10)
+
 
 try :
     # Save and close the workbook
